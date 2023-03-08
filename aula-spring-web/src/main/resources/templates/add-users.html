@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Adicionar usuário</title>
+</head>
+<body>
+  <h1>Adicionar usuário</h1>
+  <form th:action="@{users}" method="post">
+    <label>Nome</label>
+    <input type="text" name="name"/>
+    <br/>
+
+    <label>E-mail</label>
+    <input type="email" name="email"/>
+    <br/>
+
+    <label>Senha</label>
+    <input type="password" name="senha"/>
+    <br/>
+
+    <button type="submit">Salvar</button>
+
+  </form>
+
+</body>
+</html>
