@@ -3,58 +3,38 @@ package com.ada.aulaspringweb.controllers;
 import com.ada.aulaspringweb.model.User;
 import com.ada.aulaspringweb.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/users")
 public class UserController {
 
-   @Autowired
-   private UserService userService;
-   @PostMapping("/save")
-   public User save(@RequestBody User user){
-       return userService.save(user);
-   }
-   @GetMapping("/all")
-   public List<User> findAll(){
-      return userService.findAll();
-   }
+    @Autowired
+    private UserService userService;
+    @GetMapping("/users")
+    public String getAllUsers(Model model){
+        List<User> users = userService.findAll();
+        model.addAttribute("users", users);
+        return "users";
+    }
 
-   @GetMapping("email/{email}")
-   public User findByEmail(@PathVariable String email){
-      return userService.findByEmail(email);
-   }
+    @PostMapping("/users")
+    public String addUser(@RequestParam("name") String name, @RequestParam("email") String email, @RequestParam("senha") String senha){
+        User user = new User();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(senha);
+        userService.save(user);
 
-   @GetMapping("/{id}")
-   public User findById(@PathVariable Long id){
-      return userService.findById(id);
-   }
+        return "redirect:users";
+    }
 
-   @DeleteMapping("/{id}")
-   public void deleteById(@PathVariable Long id){
-      userService.deleteById(id);
-   }
-
-   @PostMapping("/edit")
-   public ResponseEntity<?> update(@RequestParam Long id, @RequestBody User user){
-
-      if (user.getName() == null){
-         System.out.println("O nome não pode ser nulo!");
-         return ResponseEntity.badRequest().body("O nome não pode ser nulo!");
-      }
-
-      user.setId(id);
-
-      try {
-         userService.save(user);
-      } catch (RuntimeException e){
-         return ResponseEntity.internalServerError().body(e.getMessage());
-      }
-
-      return ResponseEntity.ok(user);
-
-   }
+    @GetMapping("add-user")
+    public String createUser(){
+        return "add-users";
+    }
 }
