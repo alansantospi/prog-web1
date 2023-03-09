@@ -37,4 +37,17 @@ public class UserController {
     public String createUser(){
         return "add-users";
     }
+
+    @PostMapping("/users/delete/{id}")
+    public String deleteUser(@PathVariable("id") Long id) {
+        userService.deleteById(id);
+        return "users";
+    }
+
+    @PostMapping("/search")
+    public String searchFor(@RequestParam("name") String name, Model model){
+        List<User> users = userService.queryByName(name);
+        model.addAttribute("users", users);
+        return "users";
+    }
 }
