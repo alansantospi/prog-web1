@@ -30,6 +30,10 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    public List<User> queryByName(String name){
+        return userRepository.queryByName(name);
+    }
+
     public User findById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
