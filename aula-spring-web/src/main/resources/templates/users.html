@@ -6,14 +6,25 @@
 </head>
 <body>
   <h1>Lista de Usuários</h1>
+
+  <form method="post" th:action="@{./search}">
+      <input type="text" name="name"/>
+      <button type="submit">Pesquisar</button>
+  </form>
+
   <table>
-    <tr><th>Id</th><th>Nome</th><th>Email</th></tr>
+    <tr><th>Id</th><th>Nome</th><th>Email</th><th>Ações</th></tr>
     <tr th:each="user : ${users}">
         <td th:text="${user.id}"></td>
         <td th:text="${user.name}"></td>
         <td th:text="${user.email}"></td>
+        <td>
+            <form method="post" th:action="@{./users/delete/{id}(id=${user.id})}">
+                <button type="submit">Excluir</button>
+            </form>
+        </td>
     </tr>
   </table>
-  <button><a href="add-users">Novo Usuário</a></button>
+  <button><a href="add-user">Novo Usuário</a></button>
 </body>
 </html>
